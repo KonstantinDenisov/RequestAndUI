@@ -1,15 +1,17 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 public class RequestService : MonoBehaviour
 {
   #region Variables
 
   private const string Path = "https://dfu8aq28s73xi.cloudfront.net/testUsers";
-  private User[] _users;
+  private List<User> _users;
 
   #endregion
 
@@ -63,8 +65,22 @@ public class RequestService : MonoBehaviour
         
         case UnityWebRequest.Result.Success:
           Debug.Log(":\nReceived: " + webRequest.downloadHandler.text);
+          AnalyzeDataTransferObject(webRequest.downloadHandler.text);
           break;
       }
+    }
+  }
+
+  private void AnalyzeDataTransferObject(string json)
+  {
+    // _users = JsonUtility.FromJson<List<User>>(json);
+    // IDictionary<string, object> _users = Json.Deserialize(json) as IDictionary <string, object>;
+    
+    _users = JsonConvert.DeserializeObject<List<User>>(json);
+
+    foreach (User user in _users)
+    {
+      Debug.Log(user.Username + user.Points+ user.AvatarUrl);
     }
   }
 
