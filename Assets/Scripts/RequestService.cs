@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using UnityEngine.UIElements;
 
 public class RequestService : MonoBehaviour
 {
@@ -64,7 +67,17 @@ public class RequestService : MonoBehaviour
       UnityWebRequest webRequest = UnityWebRequest.Get(user.AvatarUrl);
       webRequest.timeout = 5;
       yield return webRequest.SendWebRequest();
-      // byte [] = 
+
+      string avatarInString = webRequest.downloadHandler.text;
+      byte[] avatarInByte = Encoding.ASCII.GetBytes(avatarInString);
+
+      //Image avatarInImage = new MemoryStream(avatarInByte);
+      
+      //using (var ms = new MemoryStream(avatarInByte))
+      //{
+        //yield return Image.FromStream(ms);
+      //}
+      
       yield return new WaitForSeconds(1);
     }
     
