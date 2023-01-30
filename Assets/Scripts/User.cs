@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using UnityEngine;
 
 public class User
 {
@@ -8,6 +9,8 @@ public class User
     public string AvatarUrl;
     [JsonProperty ("Points")]
     public int Points;
+
+    public Sprite AvatarSprite;
     
     public override string ToString() =>
         $"Username '{Username}', AvatarUrl '{AvatarUrl}', Points '{Points}'";

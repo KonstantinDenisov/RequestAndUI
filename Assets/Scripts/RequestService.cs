@@ -10,22 +10,13 @@ public class RequestService : MonoBehaviour
 {
   #region Variables
 
+  [SerializeField] private DynamicCellInitiation _dynamicCellInitiation;
+
   private const string Path = "https://dfu8aq28s73xi.cloudfront.net/testUsers";
   private List<User> _users;
 
   #endregion
-
-
-  #region Constructor
-
-  public RequestService()
-  {
-    
-  }
-
-  #endregion
-
-
+  
   #region Unity LifeCycle
 
   private void Start()
@@ -34,15 +25,6 @@ public class RequestService : MonoBehaviour
   }
 
   #endregion
-
-
-  #region Public Methods
-  
-  
-  
-
-  #endregion
-
 
   #region Private Methods
 
@@ -73,15 +55,14 @@ public class RequestService : MonoBehaviour
 
   private void AnalyzeDataTransferObject(string json)
   {
-    // _users = JsonUtility.FromJson<List<User>>(json);
-    // IDictionary<string, object> _users = Json.Deserialize(json) as IDictionary <string, object>;
-    
     _users = JsonConvert.DeserializeObject<List<User>>(json);
 
     foreach (User user in _users)
     {
-      Debug.Log(user.Username + user.Points+ user.AvatarUrl);
+      
     }
+    
+    _dynamicCellInitiation.CreateNewCell(_users);
   }
 
   #endregion

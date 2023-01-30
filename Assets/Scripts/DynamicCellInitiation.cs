@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DynamicCellInitiation : MonoBehaviour
@@ -7,7 +9,7 @@ public class DynamicCellInitiation : MonoBehaviour
 
     [SerializeField] private GameObject _cellPrefab;
     private RectTransform _rectTransform;
-    private readonly List<GameObject> _cells;
+    private List<GameObject> _cells;
 
     #endregion
 
@@ -22,25 +24,9 @@ public class DynamicCellInitiation : MonoBehaviour
     #endregion
 
 
-    #region Private Methods
+    #region Public Methods
 
-    
-    private void HpChanged(int hp)
-    {
-        DestroyCurrentCells();
-        CreateNewCell(hp);
-    }
-
-    private void CreateNewCell(int hp)
-    {
-        for (int i = 0; i < hp; i++)
-        {
-            GameObject cell = Instantiate(_cellPrefab, _rectTransform);
-            _cells.Add(cell);
-        }
-    }
-
-    private void DestroyCurrentCells()
+    public void DestroyCurrentCells()
     {
         foreach (GameObject cell in _cells)
         {
@@ -48,6 +34,26 @@ public class DynamicCellInitiation : MonoBehaviour
         }
 
         _cells.Clear();
+    }
+
+    public IEnumerator CreateNewCell(List<User> _users)
+    {
+        for (int i = 0; i < _users.Count; i++)
+        {
+            GameObject cell = Instantiate(_cellPrefab, _rectTransform);
+            
+            SpriteRenderer spriteRenderer = cell.GetComponentInChildren<SpriteRenderer>();
+            //spriteRenderer.sprite = Sprite.Create();
+            
+            TextMeshProUGUI textMeshProUGUI = cell.GetComponentInChildren<TextMeshProUGUI>();
+            textMeshProUGUI.text = $"{_users[i].Username} + {_users[i].Points}";
+            
+            _cells.Add(cell);
+            
+            //WaitForSeconds(2f);
+        }
+
+        return null;
     }
 
     #endregion
