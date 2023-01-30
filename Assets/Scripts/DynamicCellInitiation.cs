@@ -12,8 +12,7 @@ public class DynamicCellInitiation : MonoBehaviour
     private List<GameObject> _cells;
 
     #endregion
-
-
+    
     #region Unity LifeCycle
 
     private void Awake()
@@ -22,8 +21,7 @@ public class DynamicCellInitiation : MonoBehaviour
     }
 
     #endregion
-
-
+    
     #region Public Methods
 
     public void DestroyCurrentCells()
@@ -49,11 +47,10 @@ public class DynamicCellInitiation : MonoBehaviour
             textMeshProUGUI.text = $"{_users[i].Username} + {_users[i].Points}";
             
             _cells.Add(cell);
-            
-            //WaitForSeconds(2f);
+            yield return new WaitForSeconds(1);
         }
 
-        return null;
+        yield return null;
     }
 
     #endregion

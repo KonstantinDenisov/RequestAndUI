@@ -28,11 +28,12 @@ public class RequestService : MonoBehaviour
 
   #region Private Methods
 
-  IEnumerator GetRequest(string uri)
+  private IEnumerator GetRequest(string uri)
   {
     using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
     {
       webRequest.timeout = 5;
+      
       yield return webRequest.SendWebRequest();
 
       switch (webRequest.result)
@@ -47,22 +48,31 @@ public class RequestService : MonoBehaviour
         
         case UnityWebRequest.Result.Success:
           Debug.Log(":\nReceived: " + webRequest.downloadHandler.text);
-          AnalyzeDataTransferObject(webRequest.downloadHandler.text);
+
+          StartCoroutine(AnalyzeDataTransferObject(webRequest.downloadHandler.text));
           break;
       }
     }
   }
 
-  private void AnalyzeDataTransferObject(string json)
+  private IEnumerator AnalyzeDataTransferObject(string json)
   {
     _users = JsonConvert.DeserializeObject<List<User>>(json);
 
     foreach (User user in _users)
     {
-      
+      UnityWebRequest webRequest = UnityWebRequest.Get(user.AvatarUrl);
+      webRequest.timeout = 5;
+      yield return webRequest.SendWebRequest();
+      // byte [] = 
+      yield return new WaitForSeconds(1);
     }
     
     _dynamicCellInitiation.CreateNewCell(_users);
+
+    StartCoroutine(_dynamicCellInitiation.CreateNewCell(_users));
+
+    yield return null;
   }
 
   #endregion
